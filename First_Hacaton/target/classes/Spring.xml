@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+ 		http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="client" class="com.yet.spring.Client">
+        <constructor-arg value="1"/>
+        <constructor-arg value="John Smith"/>
+        <property name="greeting" value="Hello world"/>
+    </bean>
+
+    <bean id="eventLogger" class="com.yet.spring.loggers.ConsoleEventLogger" />
+    <bean id="eventLogger2" class="com.yet.spring.loggers.FileEventLogger" init-method="init">
+        <constructor-arg value="EventCatalog.txt"/>
+    </bean>
+    <bean id="eventLogger3" class="com.yet.spring.loggers.CashFielEvetnLogger" init-method="init" destroy-method="destroy">
+        <constructor-arg value="EventCatalog.txt"/>
+        <constructor-arg value="3"/>
+    </bean>
+
+    <bean id="app" class="com.yet.spring.App">
+        <constructor-arg ref="client"/>
+        <constructor-arg ref="eventLogger3"/>
+    </bean>
+
+    <bean id="Event" class="com.yet.spring.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date" scope="prototype"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean  id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" scope="prototype"/>
+        </constructor-arg>
+    </bean>
+
+
+</beans>
